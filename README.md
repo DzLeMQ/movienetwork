@@ -1,9 +1,3 @@
-Checkout this codes to a temp dir.
+This is a simple app to visualise a movie knowledge graph using open linked data.
 
-Create a new shiny web app in R-Studio -> choose multiple files.
-
-Copy 3 files from temp dir to this shiny web app home/dir.
-
-Run any of these files to initiate the project execution.
-
-https://dungleviz.shinyapps.io/NetworkAnalysis/
+go to app https://dungleviz.shinyapps.io/NetworkAnalysis/
