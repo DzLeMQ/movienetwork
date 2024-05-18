@@ -1,26 +1,8 @@
-# install <- function(packages){
-#   new.packages <- packages[!(packages %in% installed.packages()[, "Package"])]
-#   if (length(new.packages)) 
-#     install.packages(new.packages, dependencies = TRUE)
-#   sapply(packages, require, character.only = TRUE)
-# }
-# 
-# # # usage
-# required.packages <- c("maps","googleVis","lubridate","sqldf", "maptools","ggplot2", "devtools", "shiny", "shinydashboard","stringi", "stringr",
-#                          "tidyr","rlist","ggmap","SPARQL","networkD3","dplyr","shinycssloaders","leaflet","treemap","plotly","gridBase","sp","scales",
-#                          "forecast", "rworldmap","googleVis","gdata","wordcloud2","prophet","rlist","lubridate","data.table")
-# install(required.packages)
 
-# if(!require(installr)) { 
-#   install.packages("installr"); 
-#   require(installr)
-# } #load / install+load installr
-# updateR(F, T, F, F, F, F, T) 
+ 
 library(plyr)
 library(maps)
 library(maptools)
-#library(shinyMobile)
-# library(ggmap)
 library(shiny)
 library(shinydashboard)
 library(dplyr)
@@ -28,27 +10,18 @@ library(stringr)
 library(networkD3)
 library(visNetwork)
 library(shinycssloaders)
-# library(leaflet)
-# library(treemap)
-# library(plotly)
-# library(gridBase)
-# library(sp)
 library(tidyr)
 library(scales)
-# library(rworldmap)
 library(rlist)
 library(googleVis)
 library(stringi)
 library(sqldf)
 library(lubridate)
 library(data.table)
-# library(gdata)
 library(wordcloud2)
-#library(prophet)
 library(forecast)
 library(readr)
 
-#MoviesData <- read_csv("movies.csv")
 
 endpoint <- "http://dbpedia.org/sparql"
 PREFIXES = "PREFIX dbp: <http://dbpedia.org/property/>
