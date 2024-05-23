@@ -67,8 +67,30 @@ shinyUI(
                     tags$style(type = 'text/css', "#box_align { width:100%; margin-top: 150px;}")
                   
         ),
-        tabItem("QA",
-                h2("Comming soon...")
+        tabItem("QA", 
+                fluidRow(
+                             h3("Welcome! I am Movy, who is equipped with LLMA model.",style = "text-align:center;color:#cc0000;font-size:130%"),
+                             h3("How can I help you today?", style = "text-align:center;color:purple;font-size:100%")
+                             # p("Double-click on a movie node to view movie's details.", style = "text-align:center;color:blue;font-size:70%") ,
+                             # withSpinner(visNetworkOutput("forceGraph", width = "100%", height = 800))    
+                ),
+                tags$style(type = "text/css", ".shiny-output-error {visibility: hidden;}"),
+                tags$style(type = "text/css", ".shiny-output-error:before {content: ' Check your inputs or API key';}"),
+                tags$style(type = "text/css", "label {font-weight: bold;}"),
+                fluidRow(
+                  column(12,tags$h3(""),tags$hr(),uiOutput("chat_history"),tags$hr())
+                ),
+                fluidRow(
+                  column(12,textAreaInput(inputId = "prompt_message", placeholder = "Enter your message:", label="", width = "100%"))
+                  
+                ),
+                fluidRow(
+                  column(5),
+                  column(1,actionButton("send_prompt", "Send",icon = icon("play"),top = "350px", height = "550px")),
+                  column(5)
+                )    
+                
+                
         ),
         tabItem("analysis", help="Released Movie Summary",
                 fluidRow(
@@ -117,11 +139,11 @@ shinyUI(
                 fluidRow( align="center", withSpinner(htmlOutput("transfStatus")), style = "text-align:center;color:#cc0000;font-size:130%"),
                 p(),
                 br(),
-                p("This project is an on-going effort.  Please stop by sometime for new updates."),
+                p("This project is an on-going effort.  It will be updated when possible."),
                 br(),
                 p("Copyright @ 2017 Dung (Dzung) Le"),
                 p(),
-                p("Last updated: July 2023"),
+                p("Last updated: May 2024"),
                 br("")
 
         )

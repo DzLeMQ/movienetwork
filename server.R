@@ -14,7 +14,7 @@ shinyServer(function(session, input, output) {
  
   output$transfStatus <- renderUI({
     
-    movieTriples <- MoviesData %>% preprocessCountry
+    movieTriples <- MoviesData
     updateFilters(movieTriples)
      movieTriples <<- movieTriples
     #print(format(Sys.time(),'%H:%M:%S'))
@@ -256,8 +256,6 @@ shinyServer(function(session, input, output) {
    
   })
 
-
-
   output$latestNTitle <- renderText({
     paste('Latest ', input$latestN, ' Movies Released/to be Released')
   })
@@ -274,6 +272,59 @@ shinyServer(function(session, input, output) {
    #render datatable
    DT::datatable(select(MoviesData, -movieLink),escape=FALSE)
  
+ })
+ 
+ chat_data <- reactiveVal(data.frame())
+ 
+
+ call_api_with_curl <- function(json_payload) {
+   h <- new_handle()
+   handle_setopt(h, copypostfields = json_payload)
+   handle_setheaders(h,
+                     "Content-Type" = "application/json",
+                     "Accept" = "application/json")
+   response <- curl_fetch_memory("http://localhost:11434/api/generate", handle = h)
+   # Parse the response
+   parsed_response <- fromJSON(rawToChar(response$content))
+   return(trimws(parsed_response$response))
+ }
+ 
+ call_ollama_api <- function(prompt, model_name, temperature, max_length, sysprompt) {
+   data_list <- list(model = model_name, prompt = prompt, system = sysprompt,
+                     stream = FALSE,
+                     options = list(temperature = temperature,
+                                    num_predict = max_length))
+   json_payload <- toJSON(data_list, auto_unbox = TRUE)
+   call_api_with_curl(json_payload)
+ }
+ 
+ observeEvent(input$send_prompt, {
+   if (input$prompt_message != "") {
+     new_data <- data.frame(source = "You", message = input$prompt_message, stringsAsFactors = FALSE)
+     chat_data(rbind(chat_data(), new_data))
+     gpt_res <- call_ollama_api(prompt = input$prompt_message,
+                                model_name = "llama2", #input$model_name,
+                                temperature = 0.7, # input$temperature,
+                                max_length = 512, #input$max_length,
+                                sysprompt = "") #input$sysprompt)
+     if (!is.null(gpt_res)) {
+       gpt_data <- data.frame(source = "Movy", message = gpt_res, stringsAsFactors = FALSE)
+       chat_data(rbind(chat_data(), gpt_data))
+     }
+     
+     updateTextInput(session, "prompt_message", value = "")
+   }
+ })
+ 
+ output$chat_history <- renderUI({
+   
+   if (nrow(chat_data()) > 0) {
+   chatBox <- lapply(1:nrow(chat_data()), function(i) {
+     tags$div(class = ifelse(chat_data()[i, "source"] == "You", "alert alert-secondary", "alert alert-success"),
+              HTML(paste0("<b>", chat_data()[i, "source"], ":</b> ", text = chat_data()[i, "message"])))
+   })
+   do.call(tagList, chatBox)
+   }
  })
 
 })

@@ -1,9 +1,7 @@
 
- 
-library(plyr)
+ library(plyr)
 library(maps)
 library(maptools)
-library(shiny)
 library(shinydashboard)
 library(dplyr)
 library(stringr)
@@ -13,13 +11,13 @@ library(shinycssloaders)
 library(tidyr)
 library(scales)
 library(rlist)
-library(googleVis)
 library(stringi)
 library(sqldf)
 library(lubridate)
 library(data.table)
-library(wordcloud2)
-library(forecast)
+library(shiny)
+library(curl)
+library(jsonlite)
 library(readr)
 
 
